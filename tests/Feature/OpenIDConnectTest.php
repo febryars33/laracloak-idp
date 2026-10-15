@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\Passport\Client;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Laravel\Passport\Passport;
 
 test('discovery endpoint returns valid openid configuration', function () {
     $response = $this->getJson('/.well-known/openid-configuration');
@@ -51,4 +55,35 @@ test('logout endpoint redirects and clears web session', function () {
     $response->assertRedirect('http://localhost:8001/callback?state=xyz');
 
     $this->assertGuest('web');
+});
+
+test('fortify logout clears session and triggers backchannel logout to web clients', function () {
+    Http::fake();
+
+    $user = User::factory()->create();
+
+    $client = Client::factory()->create([
+        'backchannel_logout_uri' => 'https://elearning.test/api/oidc/backchannel-logout',
+    ]);
+
+    Passport::token()->forceFill([
+        'id' => Str::random(80),
+        'user_id' => $user->id,
+        'client_id' => $client->id,
+        'scopes' => ['openid'],
+        'revoked' => false,
+        'expires_at' => now()->addHour(),
+    ])->save();
+
+    $this->actingAs($user, 'web');
+
+    $response = $this->post('/logout');
+
+    $response->assertRedirect(route('login'));
+    $this->assertGuest('web');
+
+    Http::assertSent(function ($request) use ($client) {
+        return $request->url() === $client->backchannel_logout_uri
+            && isset($request['logout_token']);
+    });
 });

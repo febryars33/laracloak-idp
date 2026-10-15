@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Listeners\LogoutListener;
 use App\Models\Passport\Client;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +39,8 @@ class AppServiceProvider extends ServiceProvider
         Passport::useClientModel(Client::class);
         Passport::authorizationView('auth.authorize');
         Passport::tokensCan(config('openid.passport.tokens_can'));
+
+        Event::listen(Logout::class, LogoutListener::class);
 
         $this->administrator();
     }

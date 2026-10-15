@@ -18,6 +18,7 @@ class OAuthClientSeeder extends Seeder
             [
                 'secret' => Str::random(40),
                 'redirect' => 'http://localhost:8001/auth/callback,http://elearning.mylocalhost.test/auth/callback',
+                'backchannel_logout_uri' => 'http://elearning.mylocalhost.test/api/oidc/backchannel-logout',
                 'personal_access_client' => false,
                 'password_client' => false,
                 'revoked' => false,

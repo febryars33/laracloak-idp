@@ -5,11 +5,11 @@ namespace App\Http\Responses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
-use Laravel\Fortify\Contracts\LoginResponse as Contracts;
+use Laravel\Fortify\Contracts\LoginResponse as Contract;
 use Override;
 use Symfony\Component\HttpFoundation\Response;
 
-class LoginResponse implements Contracts
+class LoginResponse implements Contract
 {
     /**
      * Create an HTTP response that represents the object.

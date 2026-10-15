@@ -7,6 +7,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Http\Responses\LoginResponse;
+use App\Http\Responses\LogoutResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -14,6 +15,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Contracts\LoginResponse as ContractsLoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse as ContractsLogoutResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -32,6 +34,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->singleton(ContractsLoginResponse::class, LoginResponse::class);
+        $this->app->singleton(ContractsLogoutResponse::class, LogoutResponse::class);
 
         Fortify::loginView(function () {
             return inertia('auth/login');
