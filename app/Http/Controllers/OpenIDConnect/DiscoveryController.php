@@ -119,7 +119,6 @@ class DiscoveryController extends Controller
                 'client_secret_post',
             ],
             'code_challenge_methods_supported' => [
-                'plain',
                 'S256',
             ],
 
