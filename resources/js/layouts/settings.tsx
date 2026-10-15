@@ -47,14 +47,6 @@ export default function SettingsLayout({
             {/* Main Content Area */}
             <Box as="main" flex="1" w="full" py={{ base: 6, md: 8 }}>
                 <Container maxW="7xl" px={{ base: 4, md: 6 }}>
-                    {/* Header Settings ala GitHub */}
-                    <Box mb={6}>
-                        <Heading size="2xl" letterSpacing="tight">
-                            Pengaturan
-                        </Heading>
-                    </Box>
-                    <Separator mb={6} />
-
                     {/* Layout Split: Sidebar & Main Content Area */}
                     <Flex direction={{ base: "column", md: "row" }} gap={8}>
                         {/* Sidebar Navigation */}
