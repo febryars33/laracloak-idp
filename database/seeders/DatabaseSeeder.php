@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $this->call(OAuthClientSeeder::class);
+        // $this->call(OAuthClientSeeder::class);
 
         // User::factory()->create([
         //     'name' => 'Test User',
