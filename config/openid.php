@@ -96,7 +96,7 @@ return [
      * Options: laravel (use Request to extract scheme and host), server (use $_SERVER to detect)
      * or another string that will be used as-is
      */
-    'issuedBy' => 'laravel',
+    'issuedBy' => config('app.url'),
 
     /**
      * By default, https is enforce. You can disable it here.
