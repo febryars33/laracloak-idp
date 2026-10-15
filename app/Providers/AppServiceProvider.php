@@ -7,6 +7,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Passport\Passport;
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->https();
 
         Passport::useClientModel(Client::class);
         Passport::authorizationView('auth.authorize');
@@ -62,5 +64,12 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user) {
             return $user->hasRole('administrator') ? true : null;
         });
+    }
+
+    protected function https()
+    {
+        if ($this->app->environment('production') || env('FORCE_HTTPS', false)) {
+            URL::forceScheme('https');
+        }
     }
 }
