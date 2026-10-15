@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Passport\Client;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -27,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Model::shouldBeStrict(! app()->isProduction());
+
         $this->configureDefaults();
         $this->https();
 
@@ -68,7 +71,7 @@ class AppServiceProvider extends ServiceProvider
 
     protected function https()
     {
-        if ($this->app->environment('production') || env('FORCE_HTTPS', false)) {
+        if (app()->isProduction()) {
             URL::forceScheme('https');
         }
     }
