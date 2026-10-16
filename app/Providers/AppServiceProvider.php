@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Listeners\LogoutListener;
 use App\Models\Passport\Client;
+use App\Passport\CustomAccessToken;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Passport\Bridge\AccessToken;
 use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,7 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            AccessToken::class,
+            CustomAccessToken::class
+        );
     }
 
     /**

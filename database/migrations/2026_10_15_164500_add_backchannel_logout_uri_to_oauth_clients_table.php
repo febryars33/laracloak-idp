@@ -34,4 +34,3 @@ return new class extends Migration
         return $this->connection ?? config('passport.connection');
     }
 };
-
