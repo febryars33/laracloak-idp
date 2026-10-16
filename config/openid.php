@@ -84,7 +84,9 @@ return [
     /**
      * Optional associative array that will be used to set headers on the JWT
      */
-    'token_headers' => [],
+    'token_headers' => [
+        'kid' => md5(file_exists(storage_path('oauth-public.key')) ? file_get_contents(storage_path('oauth-public.key')) : ''),
+    ],
 
     /**
      * By default, microseconds are included.
