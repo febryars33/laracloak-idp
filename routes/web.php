@@ -9,5 +9,4 @@ Route::middleware(['auth'])->group(function () {
     Route::inertia('/blank', 'blank')->name('blank');
 
     Route::get('/settings/profile', ProfileController::class)->name('settings.profile.index');
-    Route::put('/settings/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
 });
