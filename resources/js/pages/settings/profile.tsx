@@ -4,6 +4,7 @@ import {
     Button,
     Code,
     Field,
+    Fieldset,
     Flex,
     Heading,
     Input,
@@ -30,7 +31,7 @@ export default function Page({
         },
     } = usePage();
 
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, put, processing, errors, isDirty } = useForm({
         name: user.name,
         email: user.email,
         phone: "+6281108110811",
@@ -74,71 +75,79 @@ export default function Page({
                         </Box>
                     </Flex>
 
-                    <Field.Root invalid={!!errors.name}>
-                        <Field.Label>Nama Lengkap</Field.Label>
-                        <InputGroup startElement={<LuUser />}>
-                            <Input
-                                type="text"
-                                name="name"
-                                value={data.name}
-                                variant="subtle"
-                                onChange={(e) =>
-                                    setData("name", e.target.value)
-                                }
-                            />
-                        </InputGroup>
-                        {errors.name && (
-                            <Field.ErrorText>{errors.name}</Field.ErrorText>
-                        )}
-                    </Field.Root>
+                    <Fieldset.Root>
+                        <Fieldset.Content>
+                            <Field.Root invalid={!!errors.name}>
+                                <Field.Label>Nama Lengkap</Field.Label>
+                                <InputGroup startElement={<LuUser />}>
+                                    <Input
+                                        type="text"
+                                        name="name"
+                                        value={data.name}
+                                        variant="subtle"
+                                        onChange={(e) =>
+                                            setData("name", e.target.value)
+                                        }
+                                    />
+                                </InputGroup>
+                                {errors.name && (
+                                    <Field.ErrorText>
+                                        {errors.name}
+                                    </Field.ErrorText>
+                                )}
+                            </Field.Root>
 
-                    <Field.Root invalid={!!errors.email}>
-                        <Field.Label>Alamat Email</Field.Label>
-                        <InputGroup startElement={<LuMail />}>
-                            <Input
-                                type="email"
-                                value={data.email}
-                                name="email"
-                                readOnly
-                                disabled
-                                variant="subtle"
-                                onChange={(e) =>
-                                    setData("email", e.target.value)
-                                }
-                            />
-                        </InputGroup>
-                        {errors.email && (
-                            <Field.ErrorText>{errors.email}</Field.ErrorText>
-                        )}
-                        <Field.HelperText>
-                            Silahkan hubungi operator untuk dapat mengubah
-                            alamat email.
-                        </Field.HelperText>
-                    </Field.Root>
+                            <Field.Root invalid={!!errors.email}>
+                                <Field.Label>Alamat Email</Field.Label>
+                                <InputGroup startElement={<LuMail />}>
+                                    <Input
+                                        type="email"
+                                        value={data.email}
+                                        name="email"
+                                        readOnly
+                                        disabled
+                                        variant="subtle"
+                                        onChange={(e) =>
+                                            setData("email", e.target.value)
+                                        }
+                                    />
+                                </InputGroup>
+                                {errors.email && (
+                                    <Field.ErrorText>
+                                        {errors.email}
+                                    </Field.ErrorText>
+                                )}
+                                <Field.HelperText>
+                                    Silahkan hubungi operator untuk dapat
+                                    mengubah alamat email.
+                                </Field.HelperText>
+                            </Field.Root>
 
-                    <Field.Root>
-                        <Field.Label>No. Telepon</Field.Label>
-                        <InputGroup startElement={<LuPhone />}>
-                            <Input
-                                variant="subtle"
-                                value={data.phone}
-                                ref={withMask("9999-9999-9999[9]")}
-                                onChange={(e) =>
-                                    setData("phone", e.target.value)
-                                }
-                            />
-                        </InputGroup>
-                    </Field.Root>
+                            <Field.Root>
+                                <Field.Label>No. Telepon</Field.Label>
+                                <InputGroup startElement={<LuPhone />}>
+                                    <Input
+                                        variant="subtle"
+                                        value={data.phone}
+                                        ref={withMask("9999-9999-9999[9]")}
+                                        onChange={(e) =>
+                                            setData("phone", e.target.value)
+                                        }
+                                    />
+                                </InputGroup>
+                            </Field.Root>
+                        </Fieldset.Content>
 
-                    <Field.Root>
                         <Button
                             type="submit"
                             colorPalette="pink"
+                            alignSelf="flex-start"
                             loading={processing}
+                            disabled={!isDirty || processing}
                         >
                             Ubah
                         </Button>
-                    </Field.Root>
+                    </Fieldset.Root>
                 </Stack>
             </form>
         </Layout>
