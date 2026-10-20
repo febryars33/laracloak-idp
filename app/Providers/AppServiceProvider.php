@@ -38,9 +38,10 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
         $this->https();
 
+        Passport::ignoreRoutes();
         Passport::useClientModel(Client::class);
-        Passport::authorizationView('auth.authorize');
         Passport::tokensCan(config('openid.passport.tokens_can'));
+        Passport::authorizationView(fn ($parameters) => inertia('auth/approve', $parameters));
 
         Event::listen(Logout::class, LogoutListener::class);
 
