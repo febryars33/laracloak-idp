@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Inertia\ExceptionResponse;
+use Inertia\Inertia;
 use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
@@ -41,6 +43,8 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensCan(config('openid.passport.tokens_can'));
 
         Event::listen(Logout::class, LogoutListener::class);
+
+        $this->inertiaErrorHandling();
 
         $this->administrator();
     }
@@ -79,5 +83,16 @@ class AppServiceProvider extends ServiceProvider
         if (app()->isProduction()) {
             URL::forceScheme('https');
         }
+    }
+
+    protected function inertiaErrorHandling()
+    {
+        Inertia::handleExceptionsUsing(function (ExceptionResponse $response) {
+            if (in_array($response->statusCode(), [403, 404, 500, 503])) {
+                return $response->render('error', [
+                    'status' => $response->statusCode(),
+                ]);
+            }
+        });
     }
 }
